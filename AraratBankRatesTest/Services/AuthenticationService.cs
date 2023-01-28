@@ -21,7 +21,7 @@ namespace AraratBankRatesTest.Services
             _httpClient = httpClient;
             _authStateProvider = authStateProvider;
             _localStorage = localStorage;
-            _baseUrl = "http://localhost:88/api/authorization";
+            _baseUrl = "https://localhost:44303/api/authorization";
         }
 
         public async Task<LoginResponse> Login(LoginDTO model)
