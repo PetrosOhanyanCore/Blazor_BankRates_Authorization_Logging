@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AraratBankRatesTest", "AraratBankRatesTest\AraratBankRatesTest.csproj", "{929BB1E0-1BA8-472E-85C3-505DDA5036E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AraratBankRatesAuthorization", "AraratBankRatesAuthorization\AraratBankRatesAuthorization.csproj", "{43DF0778-B39D-406D-AAAB-4E42DBA2A51D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{929BB1E0-1BA8-472E-85C3-505DDA5036E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{929BB1E0-1BA8-472E-85C3-505DDA5036E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{929BB1E0-1BA8-472E-85C3-505DDA5036E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43DF0778-B39D-406D-AAAB-4E42DBA2A51D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43DF0778-B39D-406D-AAAB-4E42DBA2A51D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43DF0778-B39D-406D-AAAB-4E42DBA2A51D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43DF0778-B39D-406D-AAAB-4E42DBA2A51D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
