@@ -30,16 +30,16 @@ namespace AraratBankRatesTest.Services
             if (!loginResult.IsSuccessStatusCode)
             {
                 return new LoginResponse
-                {
+                { 
                     StatusCode = 0,
-                    Message = "Server error"
+                    Message = "Server error" 
                 };
             }
             var loginResponseContent = await loginResult.Content.ReadFromJsonAsync<LoginResponse>();
             if (loginResponseContent != null)
             {
                 _localStorage.SetItemAsync("accessToken", loginResponseContent.Token);
-                ((AuthProvider)_authStateProvider).NotifyUserAuthentication(model.UserName);
+                ((AuthProvider)_authStateProvider).NotifyUserAuthentication(loginResponseContent.Token);
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResponseContent.Token);
             }
             return loginResponseContent;

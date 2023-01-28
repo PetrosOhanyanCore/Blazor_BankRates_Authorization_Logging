@@ -1,9 +1,8 @@
 ﻿@page "/login"
 @using AraratBankRatesTest.Models;
-@inject IAuthenticationService _authService
-@inject NavigationManager _navMgr
+@inject IAuthenticationService _authService;
+@inject NavigationManager _navMgr;
 <h3>Login</h3>
-
 
 <div class="row my-2">
     <div class="col-md-6">
@@ -12,7 +11,7 @@
             <div class="form-group">
                 <label for="Username">Username</label>
                 <InputText class="form-control" @bind-Value="loginModel.UserName" />
-                <ValidationMessage For="@(()=>loginModel.UserName)" />
+                <ValidationMessage For="@(()=>loginModel.Password)" />
             </div>
 
             <div class="form-group">
@@ -36,15 +35,11 @@
 @code {
     LoginDTO loginModel = new();
     LoginResponse loginResponse = new();
-
     async Task DoLogin()
     {
         loginResponse.Message = "Wait..........";
         loginResponse = await _authService.Login(loginModel);
-
         if (loginResponse.StatusCode == 1)
-        {
-            _navMgr.NavigateTo("/");
-        }
+            _navMgr.NavigateTo("/dashboard");
     }
 }

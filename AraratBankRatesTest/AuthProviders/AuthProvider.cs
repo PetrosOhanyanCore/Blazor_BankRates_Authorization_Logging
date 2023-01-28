@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
-using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
+using System.Net.Http.Headers;
 using AraratBankRatesTest.Utility;
 
 namespace AraratBankRatesTest.AuthProviders
@@ -22,20 +22,21 @@ namespace AraratBankRatesTest.AuthProviders
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var token = await _localStorage.GetItemAsync<string>("accessToken");
-            if (string.IsNullOrEmpty(token)) { return _anonymous; }
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return _anonymous;
+            }
 
             _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
-            return new AuthenticationState(new ClaimsPrincipal
-                (new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+            return new AuthenticationState(new ClaimsPrincipal(
+                  new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
         }
 
-        public void NotifyUserAuthentication(string username)
+        public void NotifyUserAuthentication(string token)
         {
-            var authUser = new ClaimsPrincipal(new ClaimsIdentity(
-                new[] { new Claim(ClaimTypes.Name, username) }, "jwtAuthType"
-                ));
-
+            var authUser = new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType"));
             var authState = Task.FromResult(new AuthenticationState(authUser));
             NotifyAuthenticationStateChanged(authState);
         }
@@ -45,6 +46,5 @@ namespace AraratBankRatesTest.AuthProviders
             var authState = Task.FromResult(_anonymous);
             NotifyAuthenticationStateChanged(authState);
         }
-
     }
 }
