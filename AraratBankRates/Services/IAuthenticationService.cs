@@ -6,5 +6,6 @@ namespace AraratBankRates.Services
     {
         Task<LoginResponse> Login(LoginDTO model);
         Task Logout();
+        Task<RegisterResponse> Register(RegisterDTO model);
     }
 }

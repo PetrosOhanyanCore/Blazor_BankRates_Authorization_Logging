@@ -51,5 +51,26 @@ namespace AraratBankRates.Services
             ((AuthProvider)_authStateProvider).NotifyUserLogout();
             _httpClient.DefaultRequestHeaders.Authorization = null;
         }
+
+        public async Task<RegisterResponse> Register(RegisterDTO model)
+        {
+            var registerResult = await _httpClient.PostAsJsonAsync($"{_baseUrl}/registration", model);
+            if (!registerResult.IsSuccessStatusCode)
+            {
+                return new RegisterResponse
+                {
+                    Status = 0,
+                    Message = "Server error"
+                };
+            }
+            else
+            {
+                return new RegisterResponse
+                {
+                    Status = 1,
+                    Message = "Success"
+                };
+            }
+        }
     }
 }

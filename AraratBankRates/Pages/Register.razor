@@ -1,0 +1,54 @@
+﻿@page "/register"
+@using AraratBankRates.Models;
+@inject IAuthenticationService _authService;
+@inject NavigationManager _navMgr;
+<h3>Register</h3>
+
+<div class="row my-2">
+    <div class="col-md-6">
+        <EditForm Model="@registerModel" OnValidSubmit="DoRegister">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label for="Name">Name</label>
+                <InputText class="form-control" @bind-Value="registerModel.Name" />
+            </div>
+
+            <div class="form-group">
+                <label for="Username">Username</label>
+                <InputText class="form-control" @bind-Value="registerModel.Username" />
+            </div>
+
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <InputText class="form-control" @bind-Value="registerModel.Email" />
+            </div>
+
+            <div class="form-group">
+                <label for="Password">Password</label>
+                <InputText class="form-control" @bind-Value="registerModel.Password" />
+            </div>           
+
+            <div class="my-2">
+                @registerResponse.Message
+            </div>
+
+            <div class="my-2">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    RegisterDTO registerModel = new();
+    RegisterResponse registerResponse = new();
+
+    async Task DoRegister()
+    {
+        RegisterResponse registerResponse = await _authService.Register(registerModel);
+        if (registerResponse.Status == 1)
+        {
+            _navMgr.NavigateTo("/");            
+        }
+    }
+}
