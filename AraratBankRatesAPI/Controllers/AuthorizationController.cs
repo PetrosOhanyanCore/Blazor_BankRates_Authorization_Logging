@@ -2,6 +2,7 @@
 using AraratBankRatesAPI.Models.Domain;
 using AraratBankRatesAPI.Models.DTO;
 using AraratBankRatesAPI.Repositories.Abstract;
+using LoggerService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,16 +19,19 @@ namespace AraratBankRatesAPI.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly ITokenService _tokenService;
+        private readonly ILoggerManager _logger;
         public AuthorizationController(DatabaseContext context,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            ITokenService tokenService
+            ITokenService tokenService,
+            ILoggerManager logger
             )
         {
             this._context = context;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this._tokenService = tokenService;
+            this._logger = logger;
         }
 
         [HttpPost]
@@ -43,14 +47,14 @@ namespace AraratBankRatesAPI.Controllers
             }
             // lets find the user
             var user = await userManager.FindByNameAsync(model.Username);
-            if(user is null)
+            if (user is null)
             {
                 status.StatusCode = 0;
                 status.Message = "invalid username";
                 return Ok(status);
             }
             // check current password
-            if(!await userManager.CheckPasswordAsync(user, model.CurrentPassword))
+            if (!await userManager.CheckPasswordAsync(user, model.CurrentPassword))
             {
                 status.StatusCode = 0;
                 status.Message = "invalid current password";
@@ -73,6 +77,7 @@ namespace AraratBankRatesAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
+            _logger.LogInfo("AuthorizationController/Login");
             var user = await userManager.FindByNameAsync(model.Username);
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
@@ -109,10 +114,13 @@ namespace AraratBankRatesAPI.Controllers
                 {
                     _context.SaveChanges();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
+                    _logger.LogError($"AuthorizationController/Login {ex.Message}");
                     return BadRequest(ex.Message);
                 }
+
+                _logger.LogInfo($"AuthorizationController/Login {model.Username},{model.Password}");
                 return Ok(new LoginResponse
                 {
                     Name = user.Name,
@@ -128,28 +136,34 @@ namespace AraratBankRatesAPI.Controllers
             //login failed condition
 
             return Ok(
-                new LoginResponse {
+                new LoginResponse
+                {
                     StatusCode = 0,
                     Message = "Invalid Username or Password",
-                    Token = "", Expiration = null });
+                    Token = "",
+                    Expiration = null
+                });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Registration([FromBody]RegistrationModel model)
+        public async Task<IActionResult> Registration([FromBody] RegistrationModel model)
         {
+            _logger.LogInfo("AuthorizationController/Registration");
             var status = new Status();
             if (!ModelState.IsValid)
             {
                 status.StatusCode = 0;
                 status.Message = "Please pass all the required fields";
+                _logger.LogError($"AuthorizationController/Registration {status.Message}");
                 return Ok(status);
             }
             // check if user exists
             var userExists = await userManager.FindByNameAsync(model.Username);
-            if (userExists!=null)
+            if (userExists != null)
             {
                 status.StatusCode = 0;
                 status.Message = "Invalid username";
+                _logger.LogError($"AuthorizationController/Registration {status.Message}");
                 return Ok(status);
             }
             var user = new ApplicationUser
@@ -160,11 +174,12 @@ namespace AraratBankRatesAPI.Controllers
                 Name = model.Name
             };
             // create a user here
-            var result= await userManager.CreateAsync(user, model.Password); 
-            if(!result.Succeeded)
+            var result = await userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
             {
                 status.StatusCode = 0;
                 status.Message = "User creation failed";
+                _logger.LogError($"AuthorizationController/Registration {status.Message}");
                 return Ok(status);
             }
 
@@ -179,6 +194,7 @@ namespace AraratBankRatesAPI.Controllers
             }
             status.StatusCode = 1;
             status.Message = "Sucessfully registered";
+            _logger.LogInfo($"AuthorizationController/Registration {status.Message}, {model.Username}, {model.Password}");
             return Ok(status);
 
         }
@@ -232,6 +248,6 @@ namespace AraratBankRatesAPI.Controllers
         //    return Ok(status);
 
         //}
-        
+
     }
 }

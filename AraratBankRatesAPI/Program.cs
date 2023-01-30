@@ -1,19 +1,24 @@
 using AraratBankRatesAPI.Models.Domain;
 using AraratBankRatesAPI.Repositories.Abstract;
 using AraratBankRatesAPI.Repositories.Domain;
+using LoggerService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using NLog;
 using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<ILoggerManager, LoggerManager>();
 // For Entity Framework  
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("conn")));
 
