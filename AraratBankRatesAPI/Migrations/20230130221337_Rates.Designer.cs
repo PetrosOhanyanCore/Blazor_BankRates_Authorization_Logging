@@ -4,6 +4,7 @@ using AraratBankRatesAPI.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AraratBankRatesAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230130221337_Rates")]
+    partial class Rates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,6 +171,9 @@ namespace AraratBankRatesAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -181,7 +186,7 @@ namespace AraratBankRatesAPI.Migrations
                     b.Property<decimal>("GivenAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ReceivedAmount")
+                    b.Property<decimal>("ReceivenAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("TransactionStatus")
@@ -190,13 +195,13 @@ namespace AraratBankRatesAPI.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExchangeId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ExchangeId");
 
                     b.ToTable("Transactions");
                 });
@@ -336,15 +341,13 @@ namespace AraratBankRatesAPI.Migrations
 
             modelBuilder.Entity("AraratBankRatesAPI.Models.Domain.Transaction", b =>
                 {
+                    b.HasOne("AraratBankRatesAPI.Models.Domain.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("AraratBankRatesAPI.Models.Domain.Exchange", "Exchange")
                         .WithMany()
                         .HasForeignKey("ExchangeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AraratBankRatesAPI.Models.Domain.ApplicationUser", "ApplicationUser")
-                        .WithMany("Transactions")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -402,11 +405,6 @@ namespace AraratBankRatesAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("AraratBankRatesAPI.Models.Domain.ApplicationUser", b =>
-                {
-                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }
