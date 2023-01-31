@@ -1,16 +1,15 @@
-﻿namespace AraratBankRatesAPI.Models.Domain
+﻿using AraratBankRatesAPI.Models.Domain;
+
+namespace AraratBankRatesAPI.Models.DTO
 {
-    public class Transaction
+    public class TransactionResponse
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int ExchangeId { get; set; }
         public Exchange Exchange { get; set; }
         public decimal ExchangeRate { get; set; }
-        public decimal GivenAmount  { get; set; }
+        public decimal GivenAmount { get; set; }
         public decimal ReceivedAmount { get; set; }
         public string TransactionStatus { get; set; }
-        public string UserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
     }
 }

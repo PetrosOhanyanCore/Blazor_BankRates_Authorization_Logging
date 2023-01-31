@@ -36,10 +36,14 @@ namespace AraratBankRatesAPI.Models.Domain
             });
 
 
-            builder.Entity<Transaction>(e
-                => e.HasOne(t => t.ApplicationUser)
+            builder.Entity<Transaction>(e =>
+               e.HasOne(t => t.ApplicationUser)
                 .WithMany(t => t.Transactions)
                 .HasForeignKey(t => t.UserId));
+            builder.Entity<Transaction>(e =>
+                e.HasOne(t => t.Exchange)
+                .WithMany(t => t.Transactions)
+                .HasForeignKey(t => t.ExchangeId));
 
             base.OnModelCreating(builder);
         }
