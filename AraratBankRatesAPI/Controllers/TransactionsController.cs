@@ -15,17 +15,14 @@ namespace AraratBankRatesAPI.Controllers
     [Authorize]
     public class TransactionsController : ControllerBase
     {
-        private readonly DatabaseContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILoggerManager _logger;
         private readonly ITransactionService _transactionService;
 
-        public TransactionsController(DatabaseContext context,
-            UserManager<ApplicationUser> userManager,
+        public TransactionsController(UserManager<ApplicationUser> userManager,
             ILoggerManager logger,
             ITransactionService transactionService)
         {
-            this._context = context;
             this._userManager = userManager;
             this._logger = logger;
             this._transactionService = transactionService;
