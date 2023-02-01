@@ -29,7 +29,7 @@ namespace AraratBankRatesAPI.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Creat([FromBody] TransactionRequest request)
         {
             _logger.LogInfo("TransactionsController/Creat");
@@ -52,6 +52,7 @@ namespace AraratBankRatesAPI.Controllers
             return Ok();
         }
 
+        [HttpGet]
         public async Task<IActionResult> List()
         {
             _logger.LogInfo("TransactionsController/List");
@@ -76,6 +77,7 @@ namespace AraratBankRatesAPI.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetById(int id)
         {
             _logger.LogInfo("TransactionsController/GetById");
@@ -98,6 +100,33 @@ namespace AraratBankRatesAPI.Controllers
 
             _logger.LogInfo($"TransactionsController/GetById {userId},{id}");
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Calculate([FromBody] Calculate request)
+        {
+            double result = 0;
+            try
+            {
+                RateModel rateModel = new();
+                rateModel = await _transactionService.GetRates();
+
+                double givenAmount = request.GivedAmount;
+                string givenExchangeType = request.GivedExchange.ExchangeType;
+                string receivenExchangeType = request.ReceivenExchange.ExchangeType;
+
+
+                result = await _transactionService.Calculate(givenAmount, givenExchangeType, receivenExchangeType, rateModel);
+            }
+            catch (Exception)
+            {
+                _logger.LogError($"TransactionsController/Calculate");
+                return Problem();
+            }
+
+            _logger.LogInfo("TransactionsController/Calculate");
+            return Ok(result);
+
         }
     }
 }

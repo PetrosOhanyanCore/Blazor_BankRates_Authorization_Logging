@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AraratBankRatesAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230130234247_Excchang in Transaction ")]
-    partial class ExcchanginTransaction
+    [Migration("20230201054656_RUR to RUB")]
+    partial class RURtoRUB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -178,13 +178,13 @@ namespace AraratBankRatesAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<double>("ExchangeRate")
-                        .HasColumnType("double(18,2)");
+                        .HasColumnType("float");
 
                     b.Property<double>("GivenAmount")
-                        .HasColumnType("double(18,2)");
+                        .HasColumnType("float");
 
                     b.Property<double>("ReceivedAmount")
-                        .HasColumnType("double(18,2)");
+                        .HasColumnType("float");
 
                     b.Property<string>("TransactionStatus")
                         .IsRequired()

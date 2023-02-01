@@ -31,9 +31,9 @@ namespace AraratBankRatesAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExchangeId = table.Column<int>(type: "int", nullable: false),
-                    ExchangeRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    GivenAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ReceivenAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ExchangeRate = table.Column<double>(type: "double(18,2)", nullable: false),
+                    GivenAmount = table.Column<double>(type: "double(18,2)", nullable: false),
+                    ReceivenAmount = table.Column<double>(type: "double(18,2)", nullable: false),
                     TransactionStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
@@ -61,7 +61,7 @@ namespace AraratBankRatesAPI.Migrations
                 {
                     { 1, "001", "USD" },
                     { 2, "049", "EUR" },
-                    { 3, "058", "RUR" },
+                    { 3, "058", "RUB" },
                     { 4, "002", "AMD" }
                 });
 

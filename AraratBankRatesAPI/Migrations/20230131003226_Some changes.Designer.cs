@@ -129,7 +129,7 @@ namespace AraratBankRatesAPI.Migrations
                         {
                             Id = 3,
                             ExchangeCode = "058",
-                            ExchangeType = "RUR"
+                            ExchangeType = "RUB"
                         },
                         new
                         {
@@ -177,14 +177,14 @@ namespace AraratBankRatesAPI.Migrations
                     b.Property<int>("ExchangeId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ExchangeRate")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("ExchangeRate")
+                        .HasColumnType("double(18,2)");
 
-                    b.Property<decimal>("GivenAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("GivenAmount")
+                        .HasColumnType("double(18,2)");
 
-                    b.Property<decimal>("ReceivedAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("ReceivedAmount")
+                        .HasColumnType("double(18,2)");
 
                     b.Property<string>("TransactionStatus")
                         .IsRequired()

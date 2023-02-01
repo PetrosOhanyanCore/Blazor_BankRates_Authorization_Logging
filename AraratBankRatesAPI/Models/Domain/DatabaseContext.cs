@@ -30,7 +30,7 @@ namespace AraratBankRatesAPI.Models.Domain
                 {
                 new Exchange() { Id = 1, ExchangeCode="001",ExchangeType="USD" },
                 new Exchange() { Id = 2, ExchangeCode="049", ExchangeType="EUR"},
-                new Exchange() { Id = 3, ExchangeCode="058", ExchangeType="RUR"},
+                new Exchange() { Id = 3, ExchangeCode="058", ExchangeType="RUB"},
                 new Exchange() { Id = 4, ExchangeCode="002", ExchangeType="AMD"},
                 });
             });

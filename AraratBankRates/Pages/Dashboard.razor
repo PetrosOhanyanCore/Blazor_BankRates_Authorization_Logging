@@ -1,5 +1,7 @@
 ﻿@page "/dashboard"
 @using Microsoft.AspNetCore.Authorization;
+@using AraratBankRates.Models;
+@inject ITransactionService _transactionService;
 @attribute [Authorize]
 <h3>Dashboard</h3>
 
@@ -11,6 +13,118 @@
         You are not authorized
     </NotAuthorized>
 </AuthorizeView>
+<div>
+    <EditForm Model="@exchange">
+        <InputRadioGroup @bind-Value="calculate.GivedExchange.ExchangeCode">
+            <div>
+                <h3>From</h3>
+            </div>
+            <div>
+                <InputRadio Value="LocalData[0].ExchangeCode" checked="checked" />
+                <label>@LocalData[0].ExchangeType</label>
+            </div>
+            <div>
+                <InputRadio Value="LocalData[1].ExchangeCode" />
+                <label>@LocalData[1].ExchangeType</label>
+            </div>
+            <div>
+                <InputRadio Value="LocalData[2].ExchangeCode" />
+                <label>@LocalData[2].ExchangeType</label>
+            </div>
+            <div>
+                <InputRadio Value="LocalData[3].ExchangeCode" />
+                <label>@LocalData[3].ExchangeType</label>
+            </div>
+        </InputRadioGroup>
+
+        <InputRadioGroup @bind-Value="calculate.ReceivenExchange.ExchangeCode">
+            <div>
+                <h3>To</h3>
+            </div>
+            <div>
+                <InputRadio Value="LocalData[0].ExchangeCode" checked="checked" />
+                <label>@LocalData[0].ExchangeType</label>
+            </div>
+            <div>
+                <InputRadio Value="LocalData[1].ExchangeCode" />
+                <label>@LocalData[1].ExchangeType</label>
+            </div>
+            <div>
+                <InputRadio Value="LocalData[2].ExchangeCode" />
+                <label>@LocalData[2].ExchangeType</label>
+            </div>
+            <div>
+                <InputRadio Value="LocalData[3].ExchangeCode" />
+                <label>@LocalData[3].ExchangeType</label>
+            </div>
+        </InputRadioGroup>
+
+        <InputNumber class="form-control" @bind-Value="calculate.GivedAmount" />
+
+        <textarea>You calculated rate will be @calculated</textarea>
+
+        <div class="my-2">
+            <button type="submit" class="btn btn-primary" @onclick="@(() => Calculate(calculate))">Create Transaction</button>
+            <button type="submit" class="btn btn-primary" @onclick="@(() => Calculate(calculate))">Calculate</button>
+        </div>
+
+    </EditForm>
+</div>
 @code {
-    
+    public ExchangeRequest exchange = new();
+    Calculate calculate = new Calculate
+        {
+            GivedAmount = 0,
+            GivedExchange = new ExchangeRequest(),
+            ReceivenExchange = new ExchangeRequest(),
+        };
+
+    double calculated = 0;
+
+
+    List<ExchangeRequest> LocalData = new List<ExchangeRequest> {
+    new ExchangeRequest() { ExchangeCode= "001", ExchangeType= "USD" },
+    new ExchangeRequest() { ExchangeCode= "002", ExchangeType= "AMD" },
+    new ExchangeRequest() { ExchangeCode= "049", ExchangeType= "EUR" },
+    new ExchangeRequest() { ExchangeCode= "058", ExchangeType= "RUB" }
+  };
+
+    async Task Calculate(Calculate calculate)
+    {
+        if (calculate.GivedExchange.ExchangeCode == "001")
+        {
+            calculate.GivedExchange.ExchangeType = "USD";
+        }
+        else if (calculate.GivedExchange.ExchangeCode == "002")
+        {
+            calculate.GivedExchange.ExchangeType = "AMD";
+        }
+        else if (calculate.GivedExchange.ExchangeCode == "049")
+        {
+            calculate.GivedExchange.ExchangeType = "EUR";
+        }
+        else if (calculate.GivedExchange.ExchangeCode == "058")
+        {
+            calculate.GivedExchange.ExchangeType = "RUB";
+        }
+
+        if (calculate.ReceivenExchange.ExchangeCode == "001")
+        {
+            calculate.ReceivenExchange.ExchangeType = "USD";
+        }
+        else if (calculate.ReceivenExchange.ExchangeCode == "002")
+        {
+            calculate.ReceivenExchange.ExchangeType = "AMD";
+        }
+        else if (calculate.ReceivenExchange.ExchangeCode == "049")
+        {
+            calculate.ReceivenExchange.ExchangeType = "EUR";
+        }
+        else if (calculate.ReceivenExchange.ExchangeCode == "058")
+        {
+            calculate.ReceivenExchange.ExchangeType = "RUB";
+        }
+        calculated = await _transactionService.Calculate(calculate);
+    }
+
 }

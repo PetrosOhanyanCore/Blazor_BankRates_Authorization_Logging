@@ -27,6 +27,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<DatabaseContext>()
     .AddDefaultTokenProviders();
 
+ConfigurationManager configuration = builder.Configuration; // allows both to access and to set up the config
+IWebHostEnvironment environment = builder.Environment;
+
+
 // Adding Authentication  
 builder.Services.AddAuthentication(options =>
 {
@@ -34,6 +38,8 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+
+
 
 // Adding Jwt Bearer  
 .AddJwtBearer(options =>
@@ -52,6 +58,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddTransient<ITokenService, TokenService>();
+builder.Services.AddTransient<ITransactionService, TransactionService>();
 
 var app = builder.Build();
 
