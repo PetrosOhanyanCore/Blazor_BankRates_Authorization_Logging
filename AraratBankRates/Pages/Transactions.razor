@@ -1,0 +1,75 @@
+﻿@page "/transactions"
+@using Microsoft.AspNetCore.Authorization;
+@using AraratBankRates.Models;
+@inject ITransactionService _transactionService;
+@attribute [Authorize]
+<h3>Transactions</h3>
+
+
+<AuthorizeView>
+    <Authorized>
+        Welcome to AraratBank rate application Dear @context.User.Identity?.Name
+    </Authorized>
+    <NotAuthorized>
+        You are not authorized
+    </NotAuthorized>
+</AuthorizeView>
+
+<div>
+    @if (response == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>CreatedDate</th>
+                    <th>ExchangeType</th>
+                    <th>ExchangeRate</th>
+                    <th>GivenAmount</th>
+                    <th>ReceivedAmount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var transaction in response)
+                {
+                    <tr>
+                        <td>@transaction.CreatedDate</td>
+                        <td>@transaction.Exchange.ExchangeType</td>
+                        <td>@transaction.ExchangeRate</td>
+                        <td>@transaction.GivenAmount</td>
+                        <td>@transaction.ReceivedAmount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<div class="my-2">
+    <button type="submit" class="btn btn-primary" @onclick="@(() => GetAll())">List of transactions</button>
+
+    <InputNumber class="form-control" @bind-Value="id" />
+
+    <button type="submit" class="btn btn-primary" @onclick="@(() => GetById(id))">Get by Id</button>
+</div>
+
+@code {
+    List<TransactionResponse>? response = new();
+    TransactionResponse responseById = new();
+    int id { get; set; }
+
+
+    async Task GetAll()
+    {
+        response = await _transactionService.GetAll();
+    }
+
+    async Task GetById(int transactionId)
+    {
+        responseById = await _transactionService.GetById(transactionId);
+    }
+
+}

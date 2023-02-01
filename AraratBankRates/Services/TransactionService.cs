@@ -16,7 +16,7 @@ namespace AraratBankRates.Services
         public TransactionService(HttpClient httpClient, ILocalStorageService localStorageService)
         {
             _httpClient = httpClient;
-            _localStorage= localStorageService; 
+            _localStorage = localStorageService;
             _baseUrl = "https://localhost:7163/api/transactions";
         }
 
@@ -74,10 +74,9 @@ namespace AraratBankRates.Services
 
             result.EnsureSuccessStatusCode();
 
-            var responseBody = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var responseBody = await result.Content.ReadAsStringAsync();
 
-            List<TransactionResponse>? transactionResponse =
-                JsonSerializer.Deserialize<List<TransactionResponse>>(responseBody);
+            var transactionResponse = JsonSerializer.Deserialize<List<TransactionResponse>?>(responseBody);
 
             return transactionResponse;
         }
@@ -102,4 +101,6 @@ namespace AraratBankRates.Services
         }
 
     }
+
+
 }

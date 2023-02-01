@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AraratBankRates", "AraratBa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AraratBankRatesAPI", "AraratBankRatesAPI\AraratBankRatesAPI.csproj", "{43DF0778-B39D-406D-AAAB-4E42DBA2A51D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{8AB26203-3C33-48FD-AEC7-9D7B186B85C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{8AB26203-3C33-48FD-AEC7-9D7B186B85C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

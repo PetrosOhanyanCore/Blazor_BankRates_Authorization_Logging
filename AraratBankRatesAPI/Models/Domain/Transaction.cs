@@ -1,4 +1,6 @@
-﻿namespace AraratBankRatesAPI.Models.Domain
+﻿using System.Text.Json.Serialization;
+
+namespace AraratBankRatesAPI.Models.Domain
 {
     public class Transaction
     {
@@ -11,6 +13,8 @@
         public double ReceivedAmount { get; set; }
         public string TransactionStatus { get; set; }
         public string UserId { get; set; }
+
+        [JsonIgnore]
         public ApplicationUser ApplicationUser { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace AraratBankRatesAPI.Repositories.Domain
             _context.SaveChanges();
         }
 
-        public Task<List<TransactionResponse>> GetAll(string userId)
+        public async Task<List<TransactionResponse>> GetAll(string userId)
         {
             var response = _context.Transactions.Where(x => x.UserId == userId).ToList();
 
@@ -85,8 +85,8 @@ namespace AraratBankRatesAPI.Repositories.Domain
                     CreatedDate = item.CreatedDate,
                     Exchange = new Exchange
                     {
-                        ExchangeCode = item.Exchange.ExchangeCode,
-                        ExchangeType = item.Exchange.ExchangeType,
+                        ExchangeCode = _context.Exchanges.Where(s => s.Id == item.ExchangeId).FirstOrDefault().ExchangeCode,
+                        ExchangeType = _context.Exchanges.Where(s => s.Id == item.ExchangeId).FirstOrDefault().ExchangeType,
                         Id = item.Exchange.Id
                     },
                     ExchangeRate = item.ExchangeRate,
@@ -98,7 +98,7 @@ namespace AraratBankRatesAPI.Repositories.Domain
                 result.Add(transaction);
             }
 
-            return Task.FromResult(result);
+            return result;
         }
 
         public Task<TransactionResponse> GetById(string userId, int id)
@@ -110,8 +110,8 @@ namespace AraratBankRatesAPI.Repositories.Domain
                 CreatedDate = response.CreatedDate,
                 Exchange = new Exchange
                 {
-                    ExchangeCode = response.Exchange.ExchangeCode,
-                    ExchangeType = response.Exchange.ExchangeType,
+                    ExchangeCode = _context.Exchanges.Where(s => s.Id == response.ExchangeId).FirstOrDefault().ExchangeCode,
+                    ExchangeType = _context.Exchanges.Where(s => s.Id == response.ExchangeId).FirstOrDefault().ExchangeType,
                     Id = response.Exchange.Id
                 },
                 ExchangeRate = response.ExchangeRate,

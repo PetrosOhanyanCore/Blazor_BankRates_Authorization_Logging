@@ -5,6 +5,9 @@
         public int Id { get; set; }
         public string ExchangeType { get; set; }
         public string ExchangeCode { get; set; }
-        
+        public string transactions { get; set; }
+
+
+
     }
 }

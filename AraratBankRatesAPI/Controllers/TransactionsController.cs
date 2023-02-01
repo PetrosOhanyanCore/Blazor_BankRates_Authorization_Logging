@@ -36,7 +36,6 @@ namespace AraratBankRatesAPI.Controllers
 
             var userClaim = this.User;
             var user = await _userManager.FindByNameAsync(userClaim.Identity.Name);
-            //var user = await _userManager.GetUserAsync(userClaim);
 
             request.UserId = user.Id;
             try
@@ -59,7 +58,7 @@ namespace AraratBankRatesAPI.Controllers
             _logger.LogInfo("TransactionsController/List");
 
             var userClaim = this.User;
-            var user = await _userManager.GetUserAsync(userClaim);
+            var user = await _userManager.FindByNameAsync(userClaim.Identity.Name);
 
             var userId = user.Id;
             var response = new List<TransactionResponse>();
@@ -84,7 +83,7 @@ namespace AraratBankRatesAPI.Controllers
             _logger.LogInfo("TransactionsController/GetById");
 
             var userClaim = this.User;
-            var user = await _userManager.GetUserAsync(userClaim);
+            var user = await _userManager.FindByNameAsync(userClaim.Identity.Name);
 
             var userId = user.Id;
             var response = new TransactionResponse();
