@@ -7,7 +7,7 @@
 
 <AuthorizeView>
     <Authorized>
-        Wlecome to AraratBank rate application Dear @context.User.Identity?.Name
+        Welcome to AraratBank rate application Dear @context.User.Identity?.Name
     </Authorized>
     <NotAuthorized>
         You are not authorized
@@ -61,33 +61,53 @@
 
         <InputNumber class="form-control" @bind-Value="calculate.GivedAmount" />
 
-        <textarea>You calculated rate will be @calculated</textarea>
+        <textarea readonly>Your calculated rate will be @calculated </textarea>
 
         <div class="my-2">
-            <button type="submit" class="btn btn-primary" @onclick="@(() => Calculate(calculate))">Create Transaction</button>
             <button type="submit" class="btn btn-primary" @onclick="@(() => Calculate(calculate))">Calculate</button>
+            <button type="submit" class="btn btn-primary" @onclick="@(() => CreateTransaction())">Create Transaction</button>
         </div>
 
     </EditForm>
 </div>
 @code {
-    public ExchangeRequest exchange = new();
+    public Exchange exchange = new();
+    public TransactionRequest transactionRequest = new();
+
+
     Calculate calculate = new Calculate
         {
             GivedAmount = 0,
-            GivedExchange = new ExchangeRequest(),
-            ReceivenExchange = new ExchangeRequest(),
+            GivedExchange = new Exchange(),
+            ReceivenExchange = new Exchange(),
         };
 
     double calculated = 0;
 
 
-    List<ExchangeRequest> LocalData = new List<ExchangeRequest> {
-    new ExchangeRequest() { ExchangeCode= "001", ExchangeType= "USD" },
-    new ExchangeRequest() { ExchangeCode= "002", ExchangeType= "AMD" },
-    new ExchangeRequest() { ExchangeCode= "049", ExchangeType= "EUR" },
-    new ExchangeRequest() { ExchangeCode= "058", ExchangeType= "RUB" }
+    List<Exchange> LocalData = new List<Exchange> {
+    new Exchange() { ExchangeCode= "001", ExchangeType= "USD" },
+    new Exchange() { ExchangeCode= "002", ExchangeType= "AMD" },
+    new Exchange() { ExchangeCode= "049", ExchangeType= "EUR" },
+    new Exchange() { ExchangeCode= "058", ExchangeType= "RUB" }
   };
+
+    async Task CreateTransaction()
+    {
+        transactionRequest.Exchange = new Exchange
+            {
+                Id = 0,
+                ExchangeCode = calculate.ReceivenExchange.ExchangeCode,
+                ExchangeType = calculate.ReceivenExchange.ExchangeType
+            };
+        transactionRequest.ExchangeRate = calculated / calculate.GivedAmount;
+        transactionRequest.ReceivedAmount = calculated;
+        transactionRequest.GivenAmount = calculate.GivedAmount;
+        transactionRequest.CreatedDate = DateTime.Now;
+        transactionRequest.UserId = "uysyuxs";
+
+        await _transactionService.CreateTransaction(transactionRequest);
+    }
 
     async Task Calculate(Calculate calculate)
     {
@@ -124,6 +144,7 @@
         {
             calculate.ReceivenExchange.ExchangeType = "RUB";
         }
+
         calculated = await _transactionService.Calculate(calculate);
     }
 

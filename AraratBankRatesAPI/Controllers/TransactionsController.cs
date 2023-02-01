@@ -30,12 +30,13 @@ namespace AraratBankRatesAPI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Creat([FromBody] TransactionRequest request)
+        public async Task<IActionResult> Create([FromBody] TransactionRequest request)
         {
             _logger.LogInfo("TransactionsController/Creat");
 
             var userClaim = this.User;
-            var user = await _userManager.GetUserAsync(userClaim);
+            var user = await _userManager.FindByNameAsync(userClaim.Identity.Name);
+            //var user = await _userManager.GetUserAsync(userClaim);
 
             request.UserId = user.Id;
             try

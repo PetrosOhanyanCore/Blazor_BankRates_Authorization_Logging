@@ -56,7 +56,7 @@ namespace AraratBankRatesAPI.Repositories.Domain
                     ExchangeCode = request.Exchange.ExchangeCode,
                     ExchangeType = request.Exchange.ExchangeType
                 },
-                ExchangeRate = 0,
+                ExchangeRate = request.ExchangeRate,
                 GivenAmount = request.GivenAmount,
                 ReceivedAmount = request.ReceivedAmount,
                 UserId = request.UserId,

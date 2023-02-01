@@ -2,8 +2,8 @@
 {
     public class Calculate
     {
-        public ExchangeRequest GivedExchange { get; set; }
-        public ExchangeRequest ReceivenExchange { get; set; }
+        public Exchange GivedExchange { get; set; }
+        public Exchange ReceivenExchange { get; set; }
         public double GivedAmount { get; set; }
     }
 }
