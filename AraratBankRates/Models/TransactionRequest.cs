@@ -8,6 +8,5 @@
         public double GivenAmount { get; set; }
         public double ReceivedAmount { get; set; }
         public string UserId { get; set; }
-
     }
 }

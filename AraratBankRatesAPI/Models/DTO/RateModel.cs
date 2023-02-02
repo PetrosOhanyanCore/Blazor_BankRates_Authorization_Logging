@@ -1,6 +1,5 @@
 ﻿namespace AraratBankRatesAPI.Models.DTO
 {
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class Rates
     {
         public double AED { get; set; }
@@ -183,6 +182,4 @@
         public string date { get; set; }
         public Rates rates { get; set; }
     }
-
-
 }

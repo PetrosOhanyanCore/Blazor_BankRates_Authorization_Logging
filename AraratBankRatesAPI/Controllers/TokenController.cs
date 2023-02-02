@@ -18,7 +18,6 @@ namespace AraratBankRatesAPI.Controllers
         {
             this._ctx = ctx;
             this._service = service;
-
         }
 
         [HttpPost]

@@ -50,12 +50,7 @@ namespace AraratBankRatesAPI.Repositories.Domain
         {
             Transaction transaction = new Transaction
             {
-                CreatedDate = request.CreatedDate,
-                Exchange = new Exchange
-                {
-                    ExchangeCode = request.Exchange.ExchangeCode,
-                    ExchangeType = request.Exchange.ExchangeType
-                },
+                CreatedDate = request.CreatedDate,       
                 ExchangeRate = request.ExchangeRate,
                 GivenAmount = request.GivenAmount,
                 ReceivedAmount = request.ReceivedAmount,
@@ -66,7 +61,6 @@ namespace AraratBankRatesAPI.Repositories.Domain
                 x.ExchangeType == request.Exchange.ExchangeType)
                 .FirstOrDefault().Id,
                 ApplicationUser = _context.Users.Where(x => x.Id == request.UserId).FirstOrDefault()
-
             };
             _context.Transactions.Add(transaction);
             _context.SaveChanges();

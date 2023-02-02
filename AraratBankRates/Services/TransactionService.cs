@@ -59,20 +59,7 @@ namespace AraratBankRates.Services
 
         public async Task<TransactionResponse> GetById(int id)
         {
-            //var result = await _httpClient.SendAsync(new HttpRequestMessage
-            //{
-            //    Method = HttpMethod.Get,
-
-            //    RequestUri = new Uri($"{_baseUrl}/getById/id={id}")
-
-            //    //Content = new FormUrlEncodedContent(new Dictionary<string, string> { { "id", $"{id}" } })
-            //});
-
-            //var result = await _httpClient.GetAsync(($"{_baseUrl}/getById/id={id}"));
-
             var result = await _httpClient.GetAsync($"{_baseUrl}/getById?id={id}");
-
-
 
             var responseBody = await result.Content.ReadAsStringAsync();
 
@@ -81,10 +68,5 @@ namespace AraratBankRates.Services
 
             return transactionResponse;
         }
-
     }
-
-   
-
-
 }

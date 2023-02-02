@@ -45,7 +45,7 @@ namespace AraratBankRatesAPI.Controllers
                 status.Message = "please pass all the valid fields";
                 return Ok(status);
             }
-            // lets find the user
+            //  find the user
             var user = await userManager.FindByNameAsync(model.Username);
             if (user is null)
             {
