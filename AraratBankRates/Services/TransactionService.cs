@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AraratBankRates.Services
 {
@@ -29,32 +30,6 @@ namespace AraratBankRates.Services
             var res = await _httpClient.PostAsJsonAsync($"{_baseUrl}/calculate", calculate);
             var response = await res.Content.ReadFromJsonAsync<double>();
 
-            #region OLD
-            //using var client = new HttpClient();
-
-            //_httpClient.DefaultRequestHeaders.Accept.Add(
-            //        new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //var url = $"{_baseUrl}/calculate";
-            //var response = await _httpClient.GetStringAsync(url);
-            ////var resp = await response.Content.ReadAsStringAsync();
-
-            //    var result = await _httpClient.SendAsync(new HttpRequestMessage
-            //    {
-            //        Method = HttpMethod.Get,
-
-            //        RequestUri = new Uri($"{_baseUrl}/calculate"),
-
-            //});
-
-
-
-            //var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            //double rate =
-            //    JsonSerializer.Deserialize<double>(res);
-            #endregion
-
             return response;
         }
 
@@ -67,6 +42,7 @@ namespace AraratBankRates.Services
         {
             var result = await _httpClient.SendAsync(new HttpRequestMessage
             {
+
                 Method = HttpMethod.Get,
 
                 RequestUri = new Uri($"{_baseUrl}/list")
@@ -83,16 +59,22 @@ namespace AraratBankRates.Services
 
         public async Task<TransactionResponse> GetById(int id)
         {
-            var result = await _httpClient.SendAsync(new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
+            //var result = await _httpClient.SendAsync(new HttpRequestMessage
+            //{
+            //    Method = HttpMethod.Get,
 
-                RequestUri = new Uri($"{_baseUrl}/getById")
-            });
+            //    RequestUri = new Uri($"{_baseUrl}/getById/id={id}")
 
-            result.EnsureSuccessStatusCode();
+            //    //Content = new FormUrlEncodedContent(new Dictionary<string, string> { { "id", $"{id}" } })
+            //});
 
-            var responseBody = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+            //var result = await _httpClient.GetAsync(($"{_baseUrl}/getById/id={id}"));
+
+            var result = await _httpClient.GetAsync($"{_baseUrl}/getById?id={id}");
+
+
+
+            var responseBody = await result.Content.ReadAsStringAsync();
 
             TransactionResponse? transactionResponse =
                 JsonSerializer.Deserialize<TransactionResponse>(responseBody);
@@ -101,6 +83,8 @@ namespace AraratBankRates.Services
         }
 
     }
+
+   
 
 
 }
